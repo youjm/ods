@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="ods_login:war exploded">
+    <output-path>$PROJECT_DIR$/target/test</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="ods_login" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="C:\Users\youjm\IdeaProjects\ods_login\target/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="ods_login/web/Web" />
+    </root>
+  </artifact>
+</component>

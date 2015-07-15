@@ -1,0 +1,10 @@
+<html>
+<head>
+    <title>${title}</title>
+${head}
+</head>
+<body>
+你好,这是用sitemesh装饰。<hr>
+${body}
+</body>
+</html>

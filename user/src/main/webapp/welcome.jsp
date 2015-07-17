@@ -11,10 +11,12 @@
 <head>
     <title>欢迎来到ods</title>
 </head>
-<body background="${absoluteContextPath}/image/123.jpg">
-<span style="font-size:100px;position:absolute;left: 300px;top:200px;" >
-  欢迎来到订餐系统<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="/login">请登录</a>
-</span>
+<body>
+<%--<span style="font-size:100px;position:absolute;left: 300px;top:200px;" >--%>
+  <%--欢迎来到订餐系统<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+  <%--<a href="/login">请登录</a>--%>
+<%--</span>--%>
+
+<jsp:forward page="/login"/>
 </body>
 </html>

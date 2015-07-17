@@ -3,8 +3,7 @@
     <title>${title}</title>
 ${head}
 </head>
-<body>
-你好,这是用sitemesh装饰。<hr>
+<body background="${absoluteContextPath}/image/123.jpg">
 ${body}
 </body>
 </html>

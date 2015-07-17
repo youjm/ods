@@ -8,6 +8,6 @@
     <decorator name="user_decorate" page="user_decorate.ftl">
         <!-- 默认目录下(/WEB-INF) 的所有请求 -->
         <!--写发送请求时的名称-->
-        <pattern>/</pattern>
+        <pattern>/*</pattern>
     </decorator>
 </decorators>

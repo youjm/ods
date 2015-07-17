@@ -14,7 +14,7 @@
     <input name="checkCode" type="text" id="checkCode"
            size="8" ,maxlength="4" />
     <span style="COLOR: #ff0000"> <img src="PictureCheckCode" id="CreateCheckCode" align="middle"></span>
-    <a href="" onclick="myReload()"> 看不清,换一个</a><br>
+    <a href="javascript:void(0) " onclick="myReload()"> 看不清,换一个</a><br>
 
     &nbsp;&nbsp;&nbsp;<input type="checkbox"  />记住密码&nbsp;&nbsp;&nbsp;
     <a href="/forgetPassword">忘记密码</a><br>&nbsp;&nbsp;&nbsp;

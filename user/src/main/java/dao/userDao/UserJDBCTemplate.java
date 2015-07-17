@@ -75,4 +75,13 @@ public class UserJDBCTemplate implements UserDao {
             return true;
         }
     }
+
+
+    //根据用户名查找到用户ID
+    public Integer selectByUsername(String username){
+        String sql= "select * from usertable where username= ?";
+        User user = jdbcTemplate.queryForObject(sql, new Object[]{username}, new UserMapper());
+        Integer uid = user.getId();
+        return uid;
+    }
 }

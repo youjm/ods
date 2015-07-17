@@ -49,5 +49,8 @@ public interface UserDao {
     //根据邮箱判断用户是否存在
      public boolean isExist(String username);
 
+    //通过用户名查收到用户的ID
+     public Integer selectByUsername(String username);
+
 
 }

@@ -15,6 +15,9 @@ public class test_login {
         boolean judge1= jdbcTemplate.judgeAccount(username,password);
         boolean judge2 = jdbcTemplate.judgeAccount("you","12345");
         System.out.print(judge1 + " "+ judge2);
+        Integer uid = jdbcTemplate.selectByUsername(username);
+
+        System.out.println(uid);
 
 
     }

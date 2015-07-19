@@ -20,7 +20,7 @@ public class AbsolutelyPathInterceptor extends HandlerInterceptorAdapter {
         return super.preHandle(request, response, handler);
     }
 
-    private String getAbsolutelypath(HttpServletRequest request) {
+    public String getAbsolutelypath(HttpServletRequest request) {
         String absoluteContextPath;
         String portocol = "";
         if (request.isSecure()) {

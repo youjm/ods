@@ -72,46 +72,36 @@ public class FindPasswordController {
     public ModelAndView resetPassword(@RequestParam(value = "username", required = false) String username,
                                       @RequestParam(value = "validkey", required = false) String validkey,
                                       HttpServletRequest request) {
-        //把username和validkey存起来.存到session
-        HttpSession session = request.getSession();
-        session.setAttribute("username", username);
-        session.setAttribute("validkey", validkey);
-        System.out.print(session.getAttribute(username));
-        return new ModelAndView("resetPassword");
+
+        System.out.println(username);
+        System.out.println(validkey);
+        //判断是否有权限修改密码
+        if (!jdbcTemplate.isChangePass(username, validkey)){
+            //   如果不可以的话，发挥到resetpassword页面，并显示相应的错误
+            request.setAttribute("errormsg","修改密码失败，请再次输入邮箱。");
+            //不管有没有成功最后都要将插入到findpasswordtable上面的数据删除，才能进行第二次修改 ，
+            jdbcTemplate.delete(username);
+            return new ModelAndView("findPassword");
+        }else{
+            request.setAttribute("username",username);
+            return new ModelAndView("resetPassword");
+        }
     }
 
 
     //判断是否有权利修改密码
     //新密码表单提交
     @RequestMapping(value = "/resetPasswordJudge", method = RequestMethod.POST)
-    public String resetPasswordJudge(@RequestParam String password, HttpServletRequest request) throws Exception {
-        //获得session中的username和validkey对象
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-        String validkey = (String) session.getAttribute("validkey");
-        System.out.println("********" + username + "**********");
-        System.out.println("********" + validkey + "**********");
-        System.out.println("********" + password + "**********");
-
-
-        //        判断是否可以修改密码，用resetPasswordUtil上面的函数
-        if (jdbcTemplate.isChangePass(username, validkey)) {
-            //        可以的话，更新密码写进去usertable表中，并返回登录页面
-            jdbcTemplate.update(username,password);
+    public String resetPasswordJudge(@RequestParam String password1,@RequestParam String username,
+                                     HttpServletRequest request) {
+            System.out.println("********" + username + "**********");
+            System.out.println("********" + password1 + "**********");
+            jdbcTemplate.update(username,password1);
             //不管有没有成功最后都要将插入到findpasswordtable上面的数据删除，才能进行第二次修改 ，
             // 即:在任何时刻，一个账号在findpasswordtable最多只有一条记录
             jdbcTemplate.delete(username);
             request.setAttribute("message","修改密码成功，请登录！");
             return  "login";
-        } else {
-            //   如果不可以的话，发挥到resetpassword页面，并显示相应的错误
-            request.setAttribute("errormsg","修改密码失败，请再次输入邮箱。");
-            jdbcTemplate.delete(username);
-            return "findPassword";
-        }
-
-
-
 
     }
 }

@@ -40,6 +40,11 @@ public class LoginController {
         return new Color(r,g,b);
     }
 
+    @RequestMapping(value = "/testJQuery",method = RequestMethod.GET)
+    public ModelAndView returnTestJQuery(){
+        return new ModelAndView("testForJQuery");
+    }
+
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public ModelAndView returnLogin(){
         return new ModelAndView("login","user",new User());

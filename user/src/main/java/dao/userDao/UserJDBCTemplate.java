@@ -54,7 +54,7 @@ public class UserJDBCTemplate implements UserDao {
     public void update(String username, String password) {
         String SQL = "update usertable set password = ? where username = ?";
         jdbcTemplate.update(SQL, password, username);
-        System.out.println("Updated Record with ID = " + username);
+        System.out.println("Updated usertable Record with username= " + username);
         return;
     }
 
@@ -133,7 +133,7 @@ public class UserJDBCTemplate implements UserDao {
     public void delete(String email) {
         String sql = "delete from findpasswordtable where email = ?";
         jdbcTemplate.update(sql, email);
-        System.out.println("Deleted Record with email = " + email);
+        System.out.println("Deleted findpasswordtable Record with email = " + email);
         return;
     }
 }

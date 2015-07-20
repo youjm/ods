@@ -3,7 +3,7 @@
  */
 
 function check(){
-    var password1 = document.getElementById("password").value;
+    var password1 = document.getElementById("password1").value;
     var password2 = document.getElementById("password2").value;
     if(password1.length<8){
         document.getElementById("message").innerHTML="密码长度不得小于8位";

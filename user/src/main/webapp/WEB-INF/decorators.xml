@@ -2,6 +2,8 @@
 <decorators defaultdir="/WEB-INF/decorator/">
     <excludes>
         <pattern>/js/*</pattern>
+        <pattern>/css/*</pattern>
+
     </excludes>
     <!-- 定义装饰器要过滤的页面 -->
     <!--可以定义多个decorator-->

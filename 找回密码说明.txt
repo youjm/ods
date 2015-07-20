@@ -1,0 +1,75 @@
+  发送邮件的功能已经有了，所以我这就不讲了
+
+   1、在model增加了FindpasswordModel.Findpassword的 bean
+   2、在userDao包下面增加FindpasswordMapper类
+   3、UserJDBCTemplate 中加入以下语句：
+     public boolean isExist(String username) {
+        String SQL = "select * from usertable where username = ?";
+        List<User> users = jdbcTemplate.query(SQL, new Object[]{username}, new UserMapper());
+        if (users.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    //根据用户名查找到用户ID
+    public Integer selectByUsername(String username) {
+        String sql = "select * from usertable where username= ?";
+        User user = jdbcTemplate.queryForObject(sql, new Object[]{username}, new UserMapper());
+        Integer uid = user.getId();
+        return uid;
+    }
+
+    //插入到数据库表findpassword  中
+    public void insertInfor(String email, Timestamp date, String signature) {
+        String sql = "insert into findpasswordtable(email,outdate,validkey) values(?,?,?)";
+        jdbcTemplate.update(sql, email, date, signature);
+        System.out.println("插入到数据库表findpassword中");
+        return;
+    }
+
+    //判断是否有权限修改密码
+    public boolean isChangePass(String email, String validkey){
+        String sql = "select * from findpasswordtable where email = ?";
+        System.out.println("into isChangePass");
+        try {
+            Findpassword findpassword = jdbcTemplate.queryForObject(sql, new Object[]{email}, new FindpasswordMapper());
+            //判断验证码是否正确、判断是否超时
+            System.out.println("have  email");
+            String signature = findpassword.getValidkey();
+            long current = System.currentTimeMillis();
+            long time = findpassword.getOutdate().getTime();
+            if(!validkey.equals(signature)){
+                System.out.println("验证码出错");
+                return false;
+            }else if(current>time){
+                System.out.println("超时");
+                    return false;
+            }else {
+                System.out.println("成功");
+                return true;
+            }
+        }catch (EmptyResultDataAccessException e){
+            System.out.println("no  this  email");
+            return false;
+        }
+    }
+    //判断是否可以修改之后， 不管有没有修改都要将插入到passwordtable 的那条记录删除
+    public void delete(String email) {
+        String sql = "delete from findpasswordtable where email = ?";
+        jdbcTemplate.update(sql, email);
+        System.out.println("Deleted findpasswordtable Record with email = " + email);
+        return;
+    }
+}
+
+
+
+4、在service包下面增加FindPasswordController类
+
+5、  在freemarker文件夹下面加入以下文件：
+    login.ftl  :一个找回密码的超链接
+    findPassword.ftl:   输入要修改的邮箱账号哦
+    resetPassword.ftl： 输入两次新密码的界面

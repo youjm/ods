@@ -22,7 +22,7 @@ import java.util.UUID;
  * Created by youjm on 2015/7/17.
  */
 @Controller
-public class CreateGroup {
+public class CreateGroupController {
     ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
     UserJDBCTemplate jdbcTemplate1 = (UserJDBCTemplate)context.getBean("userJDBCTemplate");
     GroupJDBCTemplate jdbcTemplate2 = (GroupJDBCTemplate)context.getBean("groupJDBCTemplate");

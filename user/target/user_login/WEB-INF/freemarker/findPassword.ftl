@@ -6,5 +6,10 @@
     请输入您的邮箱：<input type="text" name="username"/>
     <input type="submit" value="验证"/> <span style="color: red"> ${check ! ""}</span>
 </form>
+    <span style="color: red;" >
+    ${errormsg!""}
+
+    </span>
+
 </body>
 </html>

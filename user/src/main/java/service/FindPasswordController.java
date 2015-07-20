@@ -13,13 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import util.FindPasswordUtil;
 import util.MD5Util;
 import util.SendEmail.SendMail;
-import util.SendEmail.SimpleMailSender;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
@@ -32,7 +29,6 @@ public class FindPasswordController {
 
     private ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
     UserJDBCTemplate jdbcTemplate = (UserJDBCTemplate) context.getBean("userJDBCTemplate");
-    FindPasswordUtil findPasswordUtil = new FindPasswordUtil();
 
     @RequestMapping(value = "/forgetPassword", method = RequestMethod.GET)
     public ModelAndView returnFindPassword() {
@@ -56,16 +52,11 @@ public class FindPasswordController {
             String signature = MD5Util.MD5(key);
 
             //发送邮件
-            try {
-                int res = findPasswordUtil.insertInfor(username, ts, signature);
-                if (res == 1) {
+                    jdbcTemplate.insertInfor(username, ts, signature);
                     SendMail sendmail = new SendMail();
                     String url = "http://localhost:8080/resetPassword" + "?username=" + username + "&amp;validkey=" + signature;
                     sendmail.send(username, url);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
 
             model.addAttribute("check", "请点击邮箱连接认证身份");
             return "findPassword";
@@ -104,15 +95,23 @@ public class FindPasswordController {
 
 
         //        判断是否可以修改密码，用resetPasswordUtil上面的函数
-        if (findPasswordUtil.isChangePass(username, validkey)) {
+        if (jdbcTemplate.isChangePass(username, validkey)) {
             //        可以的话，更新密码写进去usertable表中，并返回登录页面
             jdbcTemplate.update(username,password);
+            //不管有没有成功最后都要将插入到findpasswordtable上面的数据删除，才能进行第二次修改 ，
+            // 即:在任何时刻，一个账号在findpasswordtable最多只有一条记录
+            jdbcTemplate.delete(username);
             request.setAttribute("message","修改密码成功，请登录！");
             return  "login";
         } else {
             //   如果不可以的话，发挥到resetpassword页面，并显示相应的错误
-            request.setAttribute("errormsg","修改密码失败，请再次修改。");
-            return "resetPassword";
+            request.setAttribute("errormsg","修改密码失败，请再次输入邮箱。");
+            jdbcTemplate.delete(username);
+            return "findPassword";
         }
+
+
+
+
     }
 }

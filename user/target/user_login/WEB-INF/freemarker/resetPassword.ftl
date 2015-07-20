@@ -13,7 +13,7 @@
 <#-- 如果两次密码不一样输出如下 -->
     <span style="color: red;" id="message">
     ${passError!""}
-    ${errormsg!""}
+
     </span>
 </form>
 </body>
